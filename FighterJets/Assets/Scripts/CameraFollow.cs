@@ -14,7 +14,6 @@ public class CameraFollow : MonoBehaviour {
 	List<Quaternion> rotations;
 
 	void Awake(){
-		refVector = Vector3.zero;
 		positions = new List<Vector3>();
 		rotations = new List<Quaternion>();
 	}
