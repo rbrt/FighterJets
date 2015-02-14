@@ -13,8 +13,6 @@ public class CameraFollow : MonoBehaviour {
 	List<Vector3> positions;
 	List<Quaternion> rotations;
 
-	Vector3 refVector;
-
 	void Awake(){
 		refVector = Vector3.zero;
 		positions = new List<Vector3>();
@@ -27,7 +25,6 @@ public class CameraFollow : MonoBehaviour {
 		if (positions.Count > 0){
 			transform.position = positions[0];
 			transform.rotation = rotations[0];
-			//Debug.Log("Set position to " + transform.position);
 			positions.RemoveAt(0);
 			rotations.RemoveAt(0);
 		}
