@@ -14,7 +14,16 @@ public class FighterController : MonoBehaviour {
 									 yawRotation,
 									 maxPitch,
 									 maxRoll,
-									 maxYaw;
+									 maxYaw,
+									 missileDelayTime;
+
+	[SerializeField] protected Transform leftMissileSpawn,
+										 leftMissileTarget,
+										 rightMissileSpawn,
+										 rightMissileTarget;
+
+	[SerializeField] protected GameObject missilePrefab;
+
 
 	bool accelerating,
 		 decelerating,
@@ -23,7 +32,8 @@ public class FighterController : MonoBehaviour {
 		 rollingRight,
 		 rollingLeft,
 		 pitchingUp,
-		 pitchingDown;
+		 pitchingDown,
+		 canShootMissiles;
 
 	[SerializeField] protected float currentSpeed,
 									 currentPitch,
@@ -42,6 +52,7 @@ public class FighterController : MonoBehaviour {
 		yawCoroutine = this.StartSafeCoroutine(Primer());
 		pitchCoroutine = this.StartSafeCoroutine(Primer());
 		rollCoroutine = this.StartSafeCoroutine(Primer());
+		canShootMissiles= true;
 	}
 
 	void Update () {
@@ -118,6 +129,14 @@ public class FighterController : MonoBehaviour {
 			}
 
 			pitchingUp = true;
+		}
+
+		if (Input.GetKeyDown(KeyCode.LeftShift)){
+			if (canShootMissiles){
+				canShootMissiles = false;
+				this.StartSafeCoroutine(MissileTimer());
+				ShootMissiles();
+			}
 		}
 
 		// Accelerate
@@ -197,6 +216,16 @@ public class FighterController : MonoBehaviour {
 		transform.position = pos;
 	}
 
+	void ShootMissiles(){
+		var leftMissile = GameObject.Instantiate(missilePrefab,
+												 leftMissileSpawn.transform.position,
+												 leftMissileSpawn.transform.rotation);
+
+		var rightMissile = GameObject.Instantiate(missilePrefab,
+												  rightMissileSpawn.transform.position,
+												  rightMissileSpawn.transform.rotation);
+	}
+
 	IEnumerator RollCoroutine(bool increase, float target){
 		if (increase){
 			while (currentRoll < target){
@@ -240,5 +269,14 @@ public class FighterController : MonoBehaviour {
 				yield return null;
 			}
 		}
+	}
+
+	IEnumerator MissileTimer(){
+		float startTime = Time.time;
+		while (Time.time - startTime > missileDelayTime){
+			yield return null;
+		}
+
+		canShootMissiles = true;
 	}
 }
