@@ -10,10 +10,24 @@ public class MissileLogic : MonoBehaviour {
 	}
 
 	public void ShootMissile(Transform target){
-		Debug.Log("heyo");
-
 		this.target = target;
-		this.StartSafeCoroutine(Shoot());
+		this.StartSafeCoroutine(SmarterShoot());
+	}
+
+	IEnumerator SmarterShoot(){
+		float targetDistance = 5;
+		float force = 1000;
+		float maxStep = 500f;
+
+		var rigidbody = GetComponent<Rigidbody>();
+		while (Vector3.Distance(transform.position, target.position) > targetDistance){
+			rigidbody.AddForce(transform.forward * force);
+
+			transform.rotation = Quaternion.RotateTowards(transform.rotation,
+														  Quaternion.LookRotation(target.position - transform.position),
+														  maxStep * Time.deltaTime);
+			yield return null;
+		}
 	}
 
 	IEnumerator Shoot(){
