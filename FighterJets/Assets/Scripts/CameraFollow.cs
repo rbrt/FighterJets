@@ -18,9 +18,7 @@ public class CameraFollow : MonoBehaviour {
 		rotations = new List<Quaternion>();
 	}
 
-	// Update is called once per frame
 	void Update () {
-
 		if (positions.Count > 0){
 			transform.position = positions[0];
 			transform.rotation = rotations[0];
