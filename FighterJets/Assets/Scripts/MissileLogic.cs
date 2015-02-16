@@ -4,7 +4,7 @@ using System.Collections;
 public class MissileLogic : MonoBehaviour {
 
 	[SerializeField] protected Transform target;
-    
+
     [SerializeField] protected Explosion explosion;
     [SerializeField] protected Light trailLight;
     [SerializeField] protected GameObject smokePrefab;
@@ -37,7 +37,7 @@ public class MissileLogic : MonoBehaviour {
         trailLight.gameObject.SetActive(true);
         this.StartSafeCoroutine(FlashTrail());
 
-        yield return new WaitForSeconds(.2f);
+        yield return new WaitForSeconds(.3f);
 
         this.transform.parent = null;
         shooting = true;
@@ -55,14 +55,18 @@ public class MissileLogic : MonoBehaviour {
 
     IEnumerator FlashTrail() {
         float duration = .6f;
-        while (true){ 
-            for (float i = 1.5f; i < 2; i += Time.deltaTime / duration){
-                trailLight.range = i;
-                yield return null;
-            }
+		for (float i = 0; i < 4f; i += Time.deltaTime / .1f){
+			trailLight.range = i;
+			yield return null;
+		}
 
-            for (float i = 2f; i < 1.5f; i -= Time.deltaTime / duration)
-            {
+        while (true){
+			for (float i = trailLight.range; i < 1.5f; i -= Time.deltaTime / duration){
+				trailLight.range = i;
+				yield return null;
+			}
+
+            for (float i = 1.5f; i < 2; i += Time.deltaTime / duration){
                 trailLight.range = i;
                 yield return null;
             }
