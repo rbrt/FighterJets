@@ -1,0 +1,192 @@
+fileFormatVersion: 2
+guid: 246cf9774b5ed4eb3a9e063fc4310a50
+timeCreated: 1424119721
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Blimp
+    100002: //RootNode
+    100004: Cockpit
+    100006: Cockpit Front
+    100008: Fan Mount
+    100010: Fin1
+    100012: Fin2
+    100014: Fin3
+    100016: Fin4
+    100018: Left Fan
+    100020: LeftWindow1
+    100022: LeftWindow2
+    100024: LeftWindow3
+    100026: LeftWindow4
+    100028: LeftWindow5
+    100030: Right Fan
+    100032: RightWindow1
+    100034: RightWindow2
+    100036: RightWindow3
+    100038: RightWindow4
+    100040: RightWindow5
+    100042: BlimpHead
+    100044: BlimpRear
+    100046: BlimpTail
+    100048: BlimpTailTip
+    100050: BlimpTip
+    400000: Blimp
+    400002: //RootNode
+    400004: Cockpit
+    400006: Cockpit Front
+    400008: Fan Mount
+    400010: Fin1
+    400012: Fin2
+    400014: Fin3
+    400016: Fin4
+    400018: Left Fan
+    400020: LeftWindow1
+    400022: LeftWindow2
+    400024: LeftWindow3
+    400026: LeftWindow4
+    400028: LeftWindow5
+    400030: Right Fan
+    400032: RightWindow1
+    400034: RightWindow2
+    400036: RightWindow3
+    400038: RightWindow4
+    400040: RightWindow5
+    400042: BlimpHead
+    400044: BlimpRear
+    400046: BlimpTail
+    400048: BlimpTailTip
+    400050: BlimpTip
+    2300000: Blimp
+    2300002: Cockpit
+    2300004: Cockpit Front
+    2300006: Fan Mount
+    2300008: Fin1
+    2300010: Fin2
+    2300012: Fin3
+    2300014: Fin4
+    2300016: Left Fan
+    2300018: LeftWindow1
+    2300020: LeftWindow2
+    2300022: LeftWindow3
+    2300024: LeftWindow4
+    2300026: LeftWindow5
+    2300028: Right Fan
+    2300030: RightWindow1
+    2300032: RightWindow2
+    2300034: RightWindow3
+    2300036: RightWindow4
+    2300038: RightWindow5
+    2300040: BlimpHead
+    2300042: BlimpRear
+    2300044: BlimpTail
+    2300046: BlimpTailTip
+    2300048: BlimpTip
+    3300000: Blimp
+    3300002: Cockpit
+    3300004: Cockpit Front
+    3300006: Fan Mount
+    3300008: Fin1
+    3300010: Fin2
+    3300012: Fin3
+    3300014: Fin4
+    3300016: Left Fan
+    3300018: LeftWindow1
+    3300020: LeftWindow2
+    3300022: LeftWindow3
+    3300024: LeftWindow4
+    3300026: LeftWindow5
+    3300028: Right Fan
+    3300030: RightWindow1
+    3300032: RightWindow2
+    3300034: RightWindow3
+    3300036: RightWindow4
+    3300038: RightWindow5
+    3300040: BlimpHead
+    3300042: BlimpRear
+    3300044: BlimpTail
+    3300046: BlimpTailTip
+    3300048: BlimpTip
+    4300000: Fan Mount
+    4300002: Cockpit
+    4300004: Cockpit Front
+    4300006: RightWindow1
+    4300008: LeftWindow1
+    4300010: LeftWindow2
+    4300012: LeftWindow3
+    4300014: LeftWindow4
+    4300016: LeftWindow5
+    4300018: RightWindow2
+    4300020: RightWindow3
+    4300022: RightWindow4
+    4300024: RightWindow5
+    4300026: Blimp
+    4300028: Fin1
+    4300030: Fin2
+    4300032: Fin3
+    4300034: Fin4
+    4300036: Left Fan
+    4300038: Right Fan
+    4300040: BlimpTip
+    4300042: BlimpTailTip
+    4300044: BlimpTail
+    4300046: BlimpRear
+    4300048: BlimpHead
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 100
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
