@@ -55,7 +55,172 @@ public class FighterController : MonoBehaviour {
 		canShootMissiles= true;
 	}
 
-	void Update () {
+    void YawRight(){
+        if (!yawingRight)
+        {
+            if (yawCoroutine.IsRunning)
+            {
+                yawCoroutine.Stop();
+            }
+            yawCoroutine = this.StartSafeCoroutine(YawCoroutine(true, maxYaw));
+        }
+
+        yawingRight = true;
+    }
+
+    void YawLeft(){
+        if (!yawingLeft)
+        {
+            if (yawCoroutine.IsRunning)
+            {
+                yawCoroutine.Stop();
+            }
+            yawCoroutine = this.StartSafeCoroutine(YawCoroutine(false, -maxYaw));
+        }
+
+        yawingLeft = true;
+    }
+
+    void YawLeftReturn(){
+        yawingLeft = false;
+        if (yawCoroutine.IsRunning)
+        {
+            yawCoroutine.Stop();
+        }
+
+        if (Input.GetKey(KeyCode.D)) {
+            yawingRight = false;
+            YawRight();
+        }
+        else { 
+            yawCoroutine = this.StartSafeCoroutine(YawCoroutine(true, 0));
+        }
+    }
+
+    void YawRightReturn(){
+        yawingRight = false;
+
+        if (yawCoroutine.IsRunning) {
+            yawCoroutine.Stop();
+        }
+        if (Input.GetKey(KeyCode.A)){
+            yawingLeft = false;
+            YawLeft();
+        }
+        else{
+            yawCoroutine = this.StartSafeCoroutine(YawCoroutine(false, 0));
+        }
+    }
+
+    void RollRight(){
+        if (!rollingRight) {
+            if (rollCoroutine.IsRunning) {
+                rollCoroutine.Stop();
+            }
+            rollCoroutine = this.StartSafeCoroutine(RollCoroutine(false, -maxRoll));
+        }
+
+        rollingRight = true;
+    }
+    
+    void RollLeft(){
+        if (!rollingLeft) {
+            if (rollCoroutine.IsRunning) {
+                rollCoroutine.Stop();
+            }
+            rollCoroutine = this.StartSafeCoroutine(RollCoroutine(true, maxRoll));
+        }
+
+        rollingLeft = true;
+    }
+
+    void RollRightReturn(){
+        rollingRight = false;
+
+        if (rollCoroutine.IsRunning) {
+            rollCoroutine.Stop();
+        }
+
+        if (Input.GetKey(KeyCode.LeftArrow)){ 
+            rollingLeft = false;
+            RollLeft();
+        }
+        else{
+            rollCoroutine = this.StartSafeCoroutine(RollCoroutine(true, 0));
+        }
+    }
+
+    void RollLeftReturn(){
+        rollingLeft = false;
+
+        if (rollCoroutine.IsRunning) {
+            rollCoroutine.Stop();
+        }
+
+        if (Input.GetKey(KeyCode.RightArrow)){
+            rollingRight = false;
+            RollRight();
+        }
+        else {
+            rollCoroutine = this.StartSafeCoroutine(RollCoroutine(false, 0));
+        }
+    }
+
+    void PitchUp(){
+        if (!pitchingUp) {
+            if (pitchCoroutine.IsRunning) {
+                pitchCoroutine.Stop();
+            }
+            pitchCoroutine = this.StartSafeCoroutine(PitchCoroutine(false, -maxPitch));
+        }
+
+        pitchingUp = true;
+    }
+
+    void PitchDown(){
+        if (!pitchingDown) {
+            if (pitchCoroutine.IsRunning) {
+                pitchCoroutine.Stop();
+            }
+            pitchCoroutine = this.StartSafeCoroutine(PitchCoroutine(true, maxPitch));
+        }
+
+        pitchingDown = true;
+    }
+
+    void PitchUpReturn(){
+        pitchingUp = false;
+        if (pitchCoroutine.IsRunning) {
+            pitchCoroutine.Stop();
+        }
+
+        if (Input.GetKey(KeyCode.UpArrow)) { 
+            pitchingDown = false;
+            PitchDown();
+        }
+        else {
+            pitchCoroutine = this.StartSafeCoroutine(PitchCoroutine(true, 0));
+        }
+        
+    }
+
+    void PitchDownReturn(){
+        pitchingDown = false;
+
+        if (pitchCoroutine.IsRunning) {
+            pitchCoroutine.Stop();
+        }
+
+        if (Input.GetKey(KeyCode.DownArrow)) {
+            pitchingUp = false;
+            PitchUp();
+        }
+        else { 
+            pitchCoroutine = this.StartSafeCoroutine(PitchCoroutine(false, 0));
+        }
+    }
+
+	void Update (){
 		// Accelerate
 		if (Input.GetKeyDown(KeyCode.W)){
 			accelerating = true;
@@ -66,69 +231,27 @@ public class FighterController : MonoBehaviour {
 		}
 		// Yaw Left
 		if (Input.GetKeyDown(KeyCode.A)){
-			if (!yawingLeft){
-				if (yawCoroutine.IsRunning){
-					yawCoroutine.Stop();
-				}
-				yawCoroutine = this.StartSafeCoroutine(YawCoroutine(false, -maxYaw));
-			}
-
-			yawingLeft = true;
+            YawLeft();
 		}
 		// Yaw Right
 		if (Input.GetKeyDown(KeyCode.D)){
-			if (!yawingRight){
-				if (yawCoroutine.IsRunning){
-					yawCoroutine.Stop();
-				}
-				yawCoroutine = this.StartSafeCoroutine(YawCoroutine(true, maxYaw));
-			}
-
-			yawingRight = true;
+            YawRight();
 		}
 		// Roll Left
 		if (Input.GetKeyDown(KeyCode.LeftArrow)){
-			if (!rollingLeft){
-				if (rollCoroutine.IsRunning){
-					rollCoroutine.Stop();
-				}
-				rollCoroutine = this.StartSafeCoroutine(RollCoroutine(true, maxRoll));
-			}
-
-			rollingLeft = true;
+			RollLeft();
 		}
 		// Roll Right
 		if (Input.GetKeyDown(KeyCode.RightArrow)){
-			if (!rollingRight){
-				if (rollCoroutine.IsRunning){
-					rollCoroutine.Stop();
-				}
-				rollCoroutine = this.StartSafeCoroutine(RollCoroutine(false, -maxRoll));
-			}
-
-			rollingRight = true;
+            RollRight();
 		}
 		// Pitch Down
 		if (Input.GetKeyDown(KeyCode.UpArrow)){
-			if (!pitchingDown){
-				if (pitchCoroutine.IsRunning){
-					pitchCoroutine.Stop();
-				}
-				pitchCoroutine = this.StartSafeCoroutine(PitchCoroutine(true, maxPitch));
-			}
-
-			pitchingDown = true;
+			PitchDown();
 		}
 		// Pitch Up
 		if (Input.GetKeyDown(KeyCode.DownArrow)){
-			if (!pitchingUp){
-				if (pitchCoroutine.IsRunning){
-					pitchCoroutine.Stop();
-				}
-				pitchCoroutine = this.StartSafeCoroutine(PitchCoroutine(false, -maxPitch));
-			}
-
-			pitchingUp = true;
+			PitchUp();
 		}
 
 		if (Input.GetKeyDown(KeyCode.LeftShift)){
@@ -149,57 +272,29 @@ public class FighterController : MonoBehaviour {
 		}
 		// Yaw Right
 		if (Input.GetKeyUp(KeyCode.D)){
-			yawingRight = false;
-
-			if (yawCoroutine.IsRunning){
-				yawCoroutine.Stop();
-			}
-			yawCoroutine = this.StartSafeCoroutine(YawCoroutine(false, 0));
+			YawRightReturn();
 		}
 		// Yaw Left
 		if (Input.GetKeyUp(KeyCode.A)){
-			yawingLeft = false;
-			if (yawCoroutine.IsRunning){
-				yawCoroutine.Stop();
-			}
-			yawCoroutine = this.StartSafeCoroutine(YawCoroutine(true, 0));
+            YawLeftReturn();
 		}
 		// Roll Left
 		if (Input.GetKeyUp(KeyCode.LeftArrow)){
-			rollingLeft = false;
-
-			if (rollCoroutine.IsRunning){
-				rollCoroutine.Stop();
-			}
-			rollCoroutine = this.StartSafeCoroutine(RollCoroutine(false, 0));
+			RollLeftReturn();
 
 		}
 		// Roll Right
 		if (Input.GetKeyUp(KeyCode.RightArrow)){
-			rollingRight = false;
-
-			if (rollCoroutine.IsRunning){
-				rollCoroutine.Stop();
-			}
-			rollCoroutine = this.StartSafeCoroutine(RollCoroutine(true, 0));
+			RollRightReturn();
 
 		}
 		// Pitch Down
 		if (Input.GetKeyUp(KeyCode.UpArrow)){
-			pitchingDown = false;
-
-			if (pitchCoroutine.IsRunning){
-				pitchCoroutine.Stop();
-			}
-			pitchCoroutine = this.StartSafeCoroutine(PitchCoroutine(false, 0));
+			PitchDownReturn();
 		}
 		// Pitch Up
 		if (Input.GetKeyUp(KeyCode.DownArrow)){
-			pitchingUp = false;
-			if (pitchCoroutine.IsRunning){
-				pitchCoroutine.Stop();
-			}
-			pitchCoroutine = this.StartSafeCoroutine(PitchCoroutine(true, 0));
+			PitchUpReturn();
 		}
 
 		if (accelerating){
@@ -239,6 +334,8 @@ public class FighterController : MonoBehaviour {
 				yield return null;
 			}
 		}
+
+        currentRoll = target;
 	}
 
 	IEnumerator PitchCoroutine(bool increase, float target){
@@ -254,6 +351,8 @@ public class FighterController : MonoBehaviour {
 				yield return null;
 			}
 		}
+
+        currentPitch = target;
 	}
 
 	IEnumerator YawCoroutine(bool increase, float target){
@@ -269,6 +368,8 @@ public class FighterController : MonoBehaviour {
 				yield return null;
 			}
 		}
+
+        currentYaw = target;
 	}
 
 	IEnumerator MissileTimer(){
