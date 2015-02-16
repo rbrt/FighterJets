@@ -314,11 +314,21 @@ public class FighterController : MonoBehaviour {
 	void ShootMissiles(){
 		var leftMissile = GameObject.Instantiate(missilePrefab,
 												 leftMissileSpawn.transform.position,
-												 leftMissileSpawn.transform.rotation);
+												 leftMissileSpawn.transform.rotation) as GameObject;
 
 		var rightMissile = GameObject.Instantiate(missilePrefab,
 												  rightMissileSpawn.transform.position,
-												  rightMissileSpawn.transform.rotation);
+                                                  rightMissileSpawn.transform.rotation) as GameObject;
+        
+        leftMissile.transform.parent = transform;
+        rightMissile.transform.parent = transform;
+
+        leftMissile.GetComponent<MissileLogic>().ShootMissile(GameObject.Find("MissileTarget").transform,
+                                                              leftMissileSpawn.transform,
+                                                              leftMissileTarget.transform);
+        rightMissile.GetComponent<MissileLogic>().ShootMissile(GameObject.Find("MissileTarget").transform,
+                                                               rightMissileSpawn.transform,
+                                                               rightMissileTarget.transform);
 	}
 
 	IEnumerator RollCoroutine(bool increase, float target){
