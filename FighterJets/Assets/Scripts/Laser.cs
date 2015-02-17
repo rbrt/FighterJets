@@ -17,7 +17,7 @@ public class Laser : MonoBehaviour {
 	void Update(){
 		transform.position = transform.position + transform.forward * laserSpeed * Time.deltaTime;
 
-		if (startTime - Time.time > lifeTime){
+		if (Time.time - startTime > lifeTime){
 			Destroy(this.gameObject);
 		}
 	}

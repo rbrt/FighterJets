@@ -31,6 +31,54 @@ ModelImporter:
     100046: BlimpTail
     100048: BlimpTailTip
     100050: BlimpTip
+    100052: Barrel1
+    100054: Barrel1.001
+    100056: Barrel1.002
+    100058: Barrel1.003
+    100060: Barrel1.004
+    100062: Barrel1.005
+    100064: Barrel1.006
+    100066: Barrel1.007
+    100068: Barrel1.008
+    100070: Barrel1.009
+    100072: Barrel1.010
+    100074: Barrel1.011
+    100076: Barrel1.012
+    100078: Barrel1.013
+    100080: Barrel1.014
+    100082: Barrel1.015
+    100084: Barrel1.016
+    100086: Barrel1.017
+    100088: Barrel1.018
+    100090: Barrel1.019
+    100092: Barrel1.020
+    100094: Barrel1.021
+    100096: Barrel1.022
+    100098: Barrel1.023
+    100100: LeftTurret1
+    100102: LeftTurret2
+    100104: LeftTurret3
+    100106: LeftTurret4
+    100108: LeftTurret5
+    100110: LeftTurret6
+    100112: RightTurret1
+    100114: RightTurret2
+    100116: RightTurret3
+    100118: RightTurret4
+    100120: RightTurret5
+    100122: RightTurret6
+    100124: TurretPivot
+    100126: TurretPivot.001
+    100128: TurretPivot.002
+    100130: TurretPivot.003
+    100132: TurretPivot.004
+    100134: TurretPivot.005
+    100136: TurretPivot.006
+    100138: TurretPivot.007
+    100140: TurretPivot.008
+    100142: TurretPivot.009
+    100144: TurretPivot.010
+    100146: TurretPivot.011
     400000: Blimp
     400002: //RootNode
     400004: Cockpit
@@ -57,6 +105,54 @@ ModelImporter:
     400046: BlimpTail
     400048: BlimpTailTip
     400050: BlimpTip
+    400052: Barrel1
+    400054: Barrel1.001
+    400056: Barrel1.002
+    400058: Barrel1.003
+    400060: Barrel1.004
+    400062: Barrel1.005
+    400064: Barrel1.006
+    400066: Barrel1.007
+    400068: Barrel1.008
+    400070: Barrel1.009
+    400072: Barrel1.010
+    400074: Barrel1.011
+    400076: Barrel1.012
+    400078: Barrel1.013
+    400080: Barrel1.014
+    400082: Barrel1.015
+    400084: Barrel1.016
+    400086: Barrel1.017
+    400088: Barrel1.018
+    400090: Barrel1.019
+    400092: Barrel1.020
+    400094: Barrel1.021
+    400096: Barrel1.022
+    400098: Barrel1.023
+    400100: LeftTurret1
+    400102: LeftTurret2
+    400104: LeftTurret3
+    400106: LeftTurret4
+    400108: LeftTurret5
+    400110: LeftTurret6
+    400112: RightTurret1
+    400114: RightTurret2
+    400116: RightTurret3
+    400118: RightTurret4
+    400120: RightTurret5
+    400122: RightTurret6
+    400124: TurretPivot
+    400126: TurretPivot.001
+    400128: TurretPivot.002
+    400130: TurretPivot.003
+    400132: TurretPivot.004
+    400134: TurretPivot.005
+    400136: TurretPivot.006
+    400138: TurretPivot.007
+    400140: TurretPivot.008
+    400142: TurretPivot.009
+    400144: TurretPivot.010
+    400146: TurretPivot.011
     2300000: Blimp
     2300002: Cockpit
     2300004: Cockpit Front
@@ -82,6 +178,54 @@ ModelImporter:
     2300044: BlimpTail
     2300046: BlimpTailTip
     2300048: BlimpTip
+    2300050: Barrel1
+    2300052: Barrel1.001
+    2300054: Barrel1.002
+    2300056: Barrel1.003
+    2300058: Barrel1.004
+    2300060: Barrel1.005
+    2300062: Barrel1.006
+    2300064: Barrel1.007
+    2300066: Barrel1.008
+    2300068: Barrel1.009
+    2300070: Barrel1.010
+    2300072: Barrel1.011
+    2300074: Barrel1.012
+    2300076: Barrel1.013
+    2300078: Barrel1.014
+    2300080: Barrel1.015
+    2300082: Barrel1.016
+    2300084: Barrel1.017
+    2300086: Barrel1.018
+    2300088: Barrel1.019
+    2300090: Barrel1.020
+    2300092: Barrel1.021
+    2300094: Barrel1.022
+    2300096: Barrel1.023
+    2300098: LeftTurret1
+    2300100: LeftTurret2
+    2300102: LeftTurret3
+    2300104: LeftTurret4
+    2300106: LeftTurret5
+    2300108: LeftTurret6
+    2300110: RightTurret1
+    2300112: RightTurret2
+    2300114: RightTurret3
+    2300116: RightTurret4
+    2300118: RightTurret5
+    2300120: RightTurret6
+    2300122: TurretPivot
+    2300124: TurretPivot.001
+    2300126: TurretPivot.002
+    2300128: TurretPivot.003
+    2300130: TurretPivot.004
+    2300132: TurretPivot.005
+    2300134: TurretPivot.006
+    2300136: TurretPivot.007
+    2300138: TurretPivot.008
+    2300140: TurretPivot.009
+    2300142: TurretPivot.010
+    2300144: TurretPivot.011
     3300000: Blimp
     3300002: Cockpit
     3300004: Cockpit Front
@@ -107,6 +251,54 @@ ModelImporter:
     3300044: BlimpTail
     3300046: BlimpTailTip
     3300048: BlimpTip
+    3300050: Barrel1
+    3300052: Barrel1.001
+    3300054: Barrel1.002
+    3300056: Barrel1.003
+    3300058: Barrel1.004
+    3300060: Barrel1.005
+    3300062: Barrel1.006
+    3300064: Barrel1.007
+    3300066: Barrel1.008
+    3300068: Barrel1.009
+    3300070: Barrel1.010
+    3300072: Barrel1.011
+    3300074: Barrel1.012
+    3300076: Barrel1.013
+    3300078: Barrel1.014
+    3300080: Barrel1.015
+    3300082: Barrel1.016
+    3300084: Barrel1.017
+    3300086: Barrel1.018
+    3300088: Barrel1.019
+    3300090: Barrel1.020
+    3300092: Barrel1.021
+    3300094: Barrel1.022
+    3300096: Barrel1.023
+    3300098: LeftTurret1
+    3300100: LeftTurret2
+    3300102: LeftTurret3
+    3300104: LeftTurret4
+    3300106: LeftTurret5
+    3300108: LeftTurret6
+    3300110: RightTurret1
+    3300112: RightTurret2
+    3300114: RightTurret3
+    3300116: RightTurret4
+    3300118: RightTurret5
+    3300120: RightTurret6
+    3300122: TurretPivot
+    3300124: TurretPivot.001
+    3300126: TurretPivot.002
+    3300128: TurretPivot.003
+    3300130: TurretPivot.004
+    3300132: TurretPivot.005
+    3300134: TurretPivot.006
+    3300136: TurretPivot.007
+    3300138: TurretPivot.008
+    3300140: TurretPivot.009
+    3300142: TurretPivot.010
+    3300144: TurretPivot.011
     4300000: Fan Mount
     4300002: Cockpit
     4300004: Cockpit Front
@@ -132,6 +324,54 @@ ModelImporter:
     4300044: BlimpTail
     4300046: BlimpRear
     4300048: BlimpHead
+    4300050: RightTurret1
+    4300052: TurretPivot
+    4300054: Barrel1
+    4300056: Barrel1.001
+    4300058: RightTurret2
+    4300060: TurretPivot.001
+    4300062: Barrel1.002
+    4300064: Barrel1.003
+    4300066: RightTurret3
+    4300068: TurretPivot.002
+    4300070: Barrel1.004
+    4300072: Barrel1.005
+    4300074: RightTurret4
+    4300076: TurretPivot.003
+    4300078: Barrel1.006
+    4300080: Barrel1.007
+    4300082: RightTurret5
+    4300084: TurretPivot.004
+    4300086: Barrel1.008
+    4300088: Barrel1.009
+    4300090: RightTurret6
+    4300092: TurretPivot.005
+    4300094: Barrel1.010
+    4300096: Barrel1.011
+    4300098: LeftTurret6
+    4300100: TurretPivot.006
+    4300102: Barrel1.012
+    4300104: Barrel1.013
+    4300106: LeftTurret5
+    4300108: TurretPivot.007
+    4300110: Barrel1.014
+    4300112: Barrel1.015
+    4300114: LeftTurret4
+    4300116: TurretPivot.008
+    4300118: Barrel1.016
+    4300120: Barrel1.017
+    4300122: LeftTurret3
+    4300124: TurretPivot.009
+    4300126: Barrel1.018
+    4300128: Barrel1.019
+    4300130: LeftTurret2
+    4300132: TurretPivot.010
+    4300134: Barrel1.020
+    4300136: Barrel1.021
+    4300138: LeftTurret1
+    4300140: TurretPivot.011
+    4300142: Barrel1.022
+    4300144: Barrel1.023
   materials:
     importMaterials: 1
     materialName: 0

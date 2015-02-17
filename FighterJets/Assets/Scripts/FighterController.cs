@@ -62,6 +62,12 @@ public class FighterController : MonoBehaviour {
 				  rollCoroutine,
 				  laserChargeCoroutine;
 
+	static FighterController instance;
+
+	public static FighterController Instance{
+		get { return instance; }
+	}
+
 	IEnumerator Primer(){
 		yield break;
 	}
@@ -73,6 +79,8 @@ public class FighterController : MonoBehaviour {
 		laserChargeCoroutine = this.StartSafeCoroutine(Primer());
 		canShootMissiles = true;
 		canShootLasers = true;
+
+		instance = this;
 	}
 
     void YawRight(){
