@@ -15,14 +15,20 @@ public class FighterController : MonoBehaviour {
 									 maxPitch,
 									 maxRoll,
 									 maxYaw,
-									 missileDelayTime;
+									 missileDelayTime,
+									 laserDelayTime;
 
 	[SerializeField] protected Transform leftMissileSpawn,
 										 leftMissileTarget,
 										 rightMissileSpawn,
-										 rightMissileTarget;
+										 rightMissileTarget,
+										 leftLaserSpawn,
+										 rightLaserSpawn;
 
-	[SerializeField] protected GameObject missilePrefab;
+	[SerializeField] protected GameObject missilePrefab,
+										  laserPrefab,
+										  leftChargeParticle,
+										  rightChargeParticle;
 
 
 	bool accelerating,
@@ -33,16 +39,28 @@ public class FighterController : MonoBehaviour {
 		 rollingLeft,
 		 pitchingUp,
 		 pitchingDown,
-		 canShootMissiles;
+		 canShootMissiles,
+		 canShootLasers,
+		 chargingLaser;
 
 	[SerializeField] protected float currentSpeed,
 									 currentPitch,
 									 currentYaw,
 									 currentRoll;
 
+	[SerializeField] protected Material chargeParticle,
+										chargeLaserMaterial;
+	[SerializeField] protected Color baseParticleColor,
+									 chargedParticleColor;
+
+	float delayBeforeChargingLaser = .75f,
+		  laserMaxChargeDuration = 3f,
+		  lastLaserTime;
+
 	SafeCoroutine yawCoroutine,
 				  pitchCoroutine,
-				  rollCoroutine;
+				  rollCoroutine,
+				  laserChargeCoroutine;
 
 	IEnumerator Primer(){
 		yield break;
@@ -52,7 +70,9 @@ public class FighterController : MonoBehaviour {
 		yawCoroutine = this.StartSafeCoroutine(Primer());
 		pitchCoroutine = this.StartSafeCoroutine(Primer());
 		rollCoroutine = this.StartSafeCoroutine(Primer());
-		canShootMissiles= true;
+		laserChargeCoroutine = this.StartSafeCoroutine(Primer());
+		canShootMissiles = true;
+		canShootLasers = true;
 	}
 
     void YawRight(){
@@ -92,7 +112,7 @@ public class FighterController : MonoBehaviour {
             yawingRight = false;
             YawRight();
         }
-        else { 
+        else {
             yawCoroutine = this.StartSafeCoroutine(YawCoroutine(true, 0));
         }
     }
@@ -122,7 +142,7 @@ public class FighterController : MonoBehaviour {
 
         rollingRight = true;
     }
-    
+
     void RollLeft(){
         if (!rollingLeft) {
             if (rollCoroutine.IsRunning) {
@@ -141,7 +161,7 @@ public class FighterController : MonoBehaviour {
             rollCoroutine.Stop();
         }
 
-        if (Input.GetKey(KeyCode.LeftArrow)){ 
+        if (Input.GetKey(KeyCode.LeftArrow)){
             rollingLeft = false;
             RollLeft();
         }
@@ -194,14 +214,14 @@ public class FighterController : MonoBehaviour {
             pitchCoroutine.Stop();
         }
 
-        if (Input.GetKey(KeyCode.UpArrow)) { 
+        if (Input.GetKey(KeyCode.UpArrow)) {
             pitchingDown = false;
             PitchDown();
         }
         else {
             pitchCoroutine = this.StartSafeCoroutine(PitchCoroutine(true, 0));
         }
-        
+
     }
 
     void PitchDownReturn(){
@@ -215,7 +235,7 @@ public class FighterController : MonoBehaviour {
             pitchingUp = false;
             PitchUp();
         }
-        else { 
+        else {
             pitchCoroutine = this.StartSafeCoroutine(PitchCoroutine(false, 0));
         }
     }
@@ -262,6 +282,19 @@ public class FighterController : MonoBehaviour {
 			}
 		}
 
+		if (Input.GetKeyDown(KeyCode.Space)){
+			if (canShootLasers){
+				if (laserChargeCoroutine.IsRunning){
+					laserChargeCoroutine.Stop();
+				}
+
+				lastLaserTime = Time.time;
+				canShootLasers = false;
+				this.StartSafeCoroutine(LaserTimer());
+				ShootLasers();
+			}
+		}
+
 		// Accelerate
 		if (Input.GetKeyUp(KeyCode.W)){
 			accelerating = false;
@@ -297,6 +330,15 @@ public class FighterController : MonoBehaviour {
 			PitchUpReturn();
 		}
 
+		if (Input.GetKeyUp(KeyCode.Space)){
+			if (Time.time - lastLaserTime > delayBeforeChargingLaser){
+				ShootLasers(chargePercent: Mathf.Min(1.0f, (Time.time - lastLaserTime) / laserMaxChargeDuration));
+				this.StartSafeCoroutine(LaserTimer());
+			}
+			laserChargeCoroutine = this.StartSafeCoroutine(FadeOutLaserCharge());
+			chargingLaser = false;
+		}
+
 		if (accelerating){
 			currentSpeed = Mathf.Min(maxSpeed, currentSpeed + acceleration * Time.deltaTime);
 		}
@@ -304,11 +346,43 @@ public class FighterController : MonoBehaviour {
 			currentSpeed = Mathf.Max(minSpeed, currentSpeed - deceleration * Time.deltaTime);
 		}
 
+		if (Input.GetKey(KeyCode.Space) && !chargingLaser && Time.time - lastLaserTime > delayBeforeChargingLaser){
+			chargingLaser = true;
+			leftChargeParticle.SetActive(true);
+			rightChargeParticle.SetActive(true);
+		}
+
+		if (chargingLaser){
+			chargeParticle.SetColor("_TintColor", Color.Lerp(baseParticleColor,
+															chargedParticleColor,
+															(Time.time - lastLaserTime) / laserMaxChargeDuration)
+								    );
+		}
+
 		transform.Rotate(currentPitch, currentYaw, currentRoll);
 
 		var pos = transform.position;
 		pos += transform.forward * currentSpeed;
 		transform.position = pos;
+	}
+
+	void ShootLasers(float chargePercent = 0){
+		var leftLaser = (GameObject.Instantiate(laserPrefab,
+							   					leftLaserSpawn.transform.position,
+							   					leftLaserSpawn.transform.rotation) as GameObject).GetComponent<Laser>();
+
+		var rightLaser = (GameObject.Instantiate(laserPrefab,
+							   					 rightLaserSpawn.transform.position,
+							   					 rightLaserSpawn.transform.rotation) as GameObject).GetComponent<Laser>();
+
+		if (chargePercent != 0){
+			chargeLaserMaterial.SetColor("_TintColor", chargeParticle.GetColor(("_TintColor")));
+			leftLaser.GetComponent<Renderer>().sharedMaterial = chargeLaserMaterial;
+			rightLaser.GetComponent<Renderer>().sharedMaterial = chargeLaserMaterial;
+		}
+
+		leftLaser.FireLaser(chargePercent);
+		rightLaser.FireLaser(chargePercent);
 	}
 
 	void ShootMissiles(){
@@ -319,7 +393,7 @@ public class FighterController : MonoBehaviour {
 		var rightMissile = GameObject.Instantiate(missilePrefab,
 												  rightMissileSpawn.transform.position,
                                                   rightMissileSpawn.transform.rotation) as GameObject;
-        
+
         leftMissile.transform.parent = transform;
         rightMissile.transform.parent = transform;
 
@@ -382,12 +456,34 @@ public class FighterController : MonoBehaviour {
         currentYaw = target;
 	}
 
+	IEnumerator FadeOutLaserCharge(){
+		Color color = chargeParticle.GetColor("_TintColor");
+		float duration = .2f;
+		for (float i = 1; i > 0; i -= Time.deltaTime / duration){
+			color.a = i;
+			chargeParticle.SetColor("_TintColor", color);
+			yield return null;
+		}
+
+		leftChargeParticle.SetActive(false);
+		rightChargeParticle.SetActive(false);
+	}
+
 	IEnumerator MissileTimer(){
 		float startTime = Time.time;
-		while (Time.time - startTime > missileDelayTime){
+		while (Time.time - startTime < missileDelayTime){
 			yield return null;
 		}
 
 		canShootMissiles = true;
+	}
+
+	IEnumerator LaserTimer(){
+		float startTime = Time.time;
+		while (Time.time - startTime < laserDelayTime){
+			yield return null;
+		}
+
+		canShootLasers = true;
 	}
 }
