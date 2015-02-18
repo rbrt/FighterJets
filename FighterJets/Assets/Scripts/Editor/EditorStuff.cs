@@ -3,19 +3,32 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 public class EditorStuff : MonoBehaviour {
 
-	[MenuItem("Custom/Center and rotate blomp turret pivots")]
+	[MenuItem("Custom/Log out trailrenderer hidden stuff")]
 	public static void KillAllBlompTurretComponents(){
-		var blompTurrets = GameObject.FindObjectsOfType<Transform>().Where(x => x.name.Contains("TurretPivot")).ToList();
+		var trailRenderer = GameObject.FindObjectsOfType<TrailRenderer>().FirstOrDefault() as TrailRenderer;
+		BindingFlags flags = BindingFlags.IgnoreReturn | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.FlattenHierarchy | BindingFlags.IgnoreCase ;
 
-		var baseRotation = blompTurrets.FirstOrDefault(x => x.name.Contains("TurretPivot.005")).transform.localRotation;
+		trailRenderer.GetType()
+					 .GetProperties(flags)
+					 .Where(x => x.ToString().ToLower().Contains("m_"))
+					 .ToList()
+					 .ForEach(x => Debug.Log(x.ToString()));
 
-		for (int i = blompTurrets.Count -1; i >= 0; i--){
-			blompTurrets[i].transform.localPosition = Vector3.zero;
-			blompTurrets[i].transform.localRotation = baseRotation;
-		}
+		trailRenderer.GetType()
+					.GetFields(flags)
+					.Where(x => x.ToString().ToLower().Contains("m_"))
+					.ToList()
+					.ForEach(x => Debug.Log(x.ToString()));
+
+		trailRenderer.GetType()
+					 .GetMethods(flags)
+					 .Where(x => x.ToString().ToLower().Contains("m_"))
+					 .ToList()
+					 .ForEach(x => Debug.Log(x.ToString()));
 	}
 
 	[MenuItem("Custom/Print Application.Datapath")]

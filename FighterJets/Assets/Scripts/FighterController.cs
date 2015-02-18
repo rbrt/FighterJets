@@ -41,7 +41,8 @@ public class FighterController : MonoBehaviour {
 		 pitchingDown,
 		 canShootMissiles,
 		 canShootLasers,
-		 chargingLaser;
+		 chargingLaser,
+		 boosting;
 
 	[SerializeField] protected float currentSpeed,
 									 currentPitch,
@@ -53,9 +54,14 @@ public class FighterController : MonoBehaviour {
 	[SerializeField] protected Color baseParticleColor,
 									 chargedParticleColor;
 
+	[SerializeField] protected Boost leftBoost,
+									 rightBoost;
+
 	float delayBeforeChargingLaser = .75f,
 		  laserMaxChargeDuration = 3f,
-		  lastLaserTime;
+		  lastLaserTime,
+		  boostAmount,
+		  maximumBoost = 5;
 
 	SafeCoroutine yawCoroutine,
 				  pitchCoroutine,
@@ -66,6 +72,11 @@ public class FighterController : MonoBehaviour {
 
 	public static FighterController Instance{
 		get { return instance; }
+	}
+
+	public float BoostAmount{
+		get { return boostAmount; }
+		set { boostAmount = value; }
 	}
 
 	IEnumerator Primer(){
@@ -290,6 +301,14 @@ public class FighterController : MonoBehaviour {
 			}
 		}
 
+		if (Input.GetKeyDown(KeyCode.RightShift)){
+			if (!boosting){
+				boosting = true;
+				leftBoost.StartBoost();
+				rightBoost.StartBoost();
+			}
+		}
+
 		if (Input.GetKeyDown(KeyCode.Space)){
 			if (canShootLasers){
 				if (laserChargeCoroutine.IsRunning){
@@ -347,8 +366,16 @@ public class FighterController : MonoBehaviour {
 			chargingLaser = false;
 		}
 
+		if (Input.GetKeyUp(KeyCode.RightShift)){
+
+			boosting = false;
+			leftBoost.StopBoost();
+			rightBoost.StopBoost();
+		}
+
 		if (accelerating){
-			currentSpeed = Mathf.Min(maxSpeed, currentSpeed + acceleration * Time.deltaTime);
+			currentSpeed = Mathf.Min(maxSpeed + boostAmount * maximumBoost,
+								     currentSpeed + (acceleration + (boostAmount * maximumBoost)) * Time.deltaTime);
 		}
 		if (decelerating){
 			currentSpeed = Mathf.Max(minSpeed, currentSpeed - deceleration * Time.deltaTime);
