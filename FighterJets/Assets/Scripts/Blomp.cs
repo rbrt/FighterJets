@@ -22,8 +22,8 @@ public class Blomp : MonoBehaviour {
 
     IEnumerator SpinBlompFans(){
         while (true){
-            leftFan.transform.Rotate(0, -1, 0);
-            rightFan.transform.Rotate(0, 1, 0);
+            leftFan.transform.Rotate(0, -2, 0);
+            rightFan.transform.Rotate(0, 2, 0);
             yield return null;
         }
     }
