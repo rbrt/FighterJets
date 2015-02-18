@@ -22,4 +22,8 @@ public class Laser : MonoBehaviour {
 		}
 	}
 
+	void OnCollisionEnter(Collision other){
+		Debug.Log(other.gameObject.name);
+	}
+
 }

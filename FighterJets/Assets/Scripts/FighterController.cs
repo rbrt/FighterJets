@@ -522,4 +522,9 @@ public class FighterController : MonoBehaviour {
 
 		canShootLasers = true;
 	}
+
+	void OnTriggerEnter(Collider other){
+		Destroy(other.gameObject);
+		playerShield.ShieldHit(other.transform);
+	}
 }

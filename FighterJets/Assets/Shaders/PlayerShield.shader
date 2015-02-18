@@ -1,9 +1,8 @@
 Shader "Custom/PlayerShield" {
 Properties {
 	_Color ("Main Color", Color) = (1,1,1,1)
-	_SpecColor ("Spec Color", Color) = (1,1,1,0)
-	_Emission ("Emissive Color", Color) = (0,0,0,0)
-	_Shininess ("Shininess", Range (0.1, 1)) = 0.7
+	_MaxEffectBound ("MaxEffectBound", Range (0, 1)) = 0
+	_MinEffectBound ("MinEffectBound", Range (0, 1)) = 0
 	_MainTex ("Base (RGB) Trans (A)", 2D) = "white" {}
 }
 
@@ -14,7 +13,9 @@ SubShader {
 	Alphatest Greater 0
 	ZWrite Off
 	Blend SrcAlpha OneMinusSrcAlpha
-	ColorMask RGB
+	ColorMask RGBA
+	Cull Off
+
 
 	// Non-lightmapped
 	Pass {
@@ -31,52 +32,64 @@ SubShader {
 		SetTexture [_MainTex] {
 			Combine texture * primary DOUBLE, texture * primary
 		}
+
 	}
+	Pass
+		{
+		CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+			#pragma multi_compile DUMMY PIXELSNAP_ON
+			#include "UnityCG.cginc"
 
-	// Lightmapped, encoded as dLDR
-	Pass {
-		Tags { "LightMode" = "VertexLM" }
+			struct appdata_t
+			{
+				float4 vertex   : POSITION;
+				float4 color    : COLOR;
+				float2 texcoord : TEXCOORD0;
+			};
 
-		BindChannels {
-			Bind "Vertex", vertex
-			Bind "normal", normal
-			Bind "texcoord1", texcoord0 // lightmap uses 2nd uv
-			Bind "texcoord", texcoord1 // main uses 1st uv
-		}
-		SetTexture [unity_Lightmap] {
-			matrix [unity_LightmapMatrix]
-			constantColor [_Color]
-			combine texture * constant
-		}
-		SetTexture [_MainTex] {
-			combine texture * previous DOUBLE, texture * primary
-		}
-	}
+			struct v2f
+			{
+				float4 vertex   : SV_POSITION;
+				fixed4 color    : COLOR;
+				half2 texcoord  : TEXCOORD0;
+			};
 
-	// Lightmapped, encoded as RGBM
-	Pass {
-		Tags { "LightMode" = "VertexLMRGBM" }
+			fixed4 _Color;
+			fixed4 _BaseColor;
+			float _MinEffectBound;
+			float _MaxEffectBound;
 
-		BindChannels {
-			Bind "Vertex", vertex
-			Bind "normal", normal
-			Bind "texcoord1", texcoord0 // lightmap uses 2nd uv
-			Bind "texcoord1", texcoord1 // unused
-			Bind "texcoord", texcoord2 // main uses 1st uv
-		}
+			v2f vert(appdata_t IN)
+			{
+				v2f OUT;
+				float4 hey = IN.vertex;
+				OUT.vertex = mul(UNITY_MATRIX_MVP, hey);
+				OUT.texcoord = IN.texcoord;
 
-		SetTexture [unity_Lightmap] {
-			matrix [unity_LightmapMatrix]
-			combine texture * texture alpha DOUBLE
+				OUT.color = IN.color * _Color;
+
+				#ifdef PIXELSNAP_ON
+				OUT.vertex = UnityPixelSnap (OUT.vertex);
+				#endif
+
+				return OUT;
+			}
+
+			sampler2D _MainTex;
+
+			fixed4 frag(v2f IN) : COLOR
+			{
+				if (IN.texcoord.y >= _MinEffectBound && IN.texcoord.y <= _MaxEffectBound ||
+					IN.texcoord.y >= _MinEffectBound - .2 && IN.texcoord.y <= _MaxEffectBound - .18 ||
+					IN.texcoord.y >= _MinEffectBound - .3 && IN.texcoord.y <= _MaxEffectBound - .29){
+					return fixed4(_Color.xyz, .4);
+				}
+				return fixed4(_Color.xyz, 0);
+			}
+		ENDCG
 		}
-		SetTexture [unity_Lightmap] {
-			constantColor [_Color]
-			combine previous * constant
-		}
-		SetTexture [_MainTex] {
-			combine texture * previous QUAD, texture * primary
-		}
-	}
 }
 
 }
