@@ -414,15 +414,17 @@ public class FighterController : MonoBehaviour {
 	}
 
 	IEnumerator RollCoroutine(bool increase, float target){
+		float rotationAmount = target == 0 ? rollRotation * 1.5f : rollRotation;
+
 		if (increase){
 			while (currentRoll < target){
-				currentRoll += rollRotation;
+				currentRoll += currentRoll < 0 ? rotationAmount * 2 : rotationAmount;
 				yield return null;
 			}
 		}
 		else{
 			while (currentRoll > target){
-				currentRoll -= rollRotation;
+				currentRoll -= currentRoll > 0 ? rotationAmount * 2 : rotationAmount;
 				yield return null;
 			}
 		}
