@@ -23,16 +23,6 @@ public class Boost : MonoBehaviour {
 
 	FighterController fighterController;
 
-	string[] indexStrings = {"m_Colors.m_Color[0]",
-						   "m_Colors.m_Color[1]",
-						   "m_Colors.m_Color[2]",
-						   "m_Colors.m_Color[3]",
-						   "m_Colors.m_Color[4]"};
-
-	// Need to scale up/down
-	// Need to change colour from/to max/min
-	// Need to rotate in opposite directions
-
 	IEnumerator Primer(){
 		yield break;
 	}
@@ -120,6 +110,13 @@ public class Boost : MonoBehaviour {
 
 
 /*
+
+	string[] indexStrings = {"m_Colors.m_Color[0]",
+							 "m_Colors.m_Color[1]",
+							 "m_Colors.m_Color[2]",
+							 "m_Colors.m_Color[3]",
+							 "m_Colors.m_Color[4]"};
+
 	IEnumerator ColourUp(){
 		float duration = .2f;
 		SerializedObject trail = innerObj;

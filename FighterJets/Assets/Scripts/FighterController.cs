@@ -57,6 +57,8 @@ public class FighterController : MonoBehaviour {
 	[SerializeField] protected Boost leftBoost,
 									 rightBoost;
 
+	[SerializeField] protected PlayerShield playerShield;
+
 	float delayBeforeChargingLaser = .75f,
 		  laserMaxChargeDuration = 3f,
 		  lastLaserTime,
@@ -97,8 +99,7 @@ public class FighterController : MonoBehaviour {
     void YawRight(){
         if (!yawingRight)
         {
-            if (yawCoroutine.IsRunning)
-            {
+            if (yawCoroutine.IsRunning){
                 yawCoroutine.Stop();
             }
             yawCoroutine = this.StartSafeCoroutine(YawCoroutine(true, maxYaw));
@@ -110,8 +111,7 @@ public class FighterController : MonoBehaviour {
     void YawLeft(){
         if (!yawingLeft)
         {
-            if (yawCoroutine.IsRunning)
-            {
+            if (yawCoroutine.IsRunning){
                 yawCoroutine.Stop();
             }
             yawCoroutine = this.StartSafeCoroutine(YawCoroutine(false, -maxYaw));
@@ -122,8 +122,7 @@ public class FighterController : MonoBehaviour {
 
     void YawLeftReturn(){
         yawingLeft = false;
-        if (yawCoroutine.IsRunning)
-        {
+        if (yawCoroutine.IsRunning){
             yawCoroutine.Stop();
         }
 
