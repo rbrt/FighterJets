@@ -13,22 +13,37 @@ public class Blomp : MonoBehaviour {
     [SerializeField] protected GameObject blompsplosion,
                                           explosionPrefab;
 
-    List<GameObject> leftBlompsplosions,
-                     rightBlompsplosions;
+    Vector3[] leftBlompsplosions,
+              rightBlompsplosions,
+              frontRing,
+              middleRing,
+              rearRing;
 
 	void Awake(){
         this.StartSafeCoroutine(SpinBlompFans());
 
         leftBlompsplosions = blompsplosion.GetComponentsInChildren<Transform>()
                                           .Where(x => x.parent.name.Equals("LeftExplosion"))
-                                          .Select(x => x.gameObject)
-                                          .ToList();
+                                          .Select(x => x.position)
+                                          .ToArray();
         rightBlompsplosions = blompsplosion.GetComponentsInChildren<Transform>()
                                            .Where(x => x.parent.name.Equals("RightExplosion"))
-                                           .Select(x => x.gameObject)
-                                           .ToList();
+                                           .Select(x => x.position)
+                                           .ToArray();
+        frontRing = blompsplosion.GetComponentsInChildren<Transform>()
+                                  .Where(x => x.parent.name.Equals("FrontRingRight") || x.parent.name.Equals("FrontRingLeft"))
+                                  .Select(x => x.position)
+                                  .ToArray();
+        middleRing = blompsplosion.GetComponentsInChildren<Transform>()
+                                  .Where(x => x.parent.name.Equals("MiddleRingRight") || x.parent.name.Equals("MiddleRingLeft"))
+                                  .Select(x => x.position)
+                                  .ToArray();
+        rearRing = blompsplosion.GetComponentsInChildren<Transform>()
+                                .Where(x => x.parent.name.Equals("RearRingRight") || x.parent.name.Equals("RearRingLeft"))
+                                .Select(x => x.position)
+                                .ToArray();
 
-        leftBlompsplosions.ForEach(x => Debug.Log(x, x.gameObject));
+        Debug.Log(middleRing.Length);
     }
 
     void Update() {
@@ -48,10 +63,24 @@ public class Blomp : MonoBehaviour {
     }
 
     IEnumerator ExplodeBlomp(){
-        for (int i = 0; i < leftBlompsplosions.Count; i++){
-            Explode(leftBlompsplosions[i].transform.position);
-            Explode(rightBlompsplosions[i].transform.position);
-            yield return new WaitForSeconds(.1f);
+        this.StartSafeCoroutine(ExplodeTargets(leftBlompsplosions, .2f));
+        yield return this.StartSafeCoroutine(ExplodeTargets(rightBlompsplosions, .2f));
+
+        this.StartSafeCoroutine(ExplodeTargets(rearRing, .2f));
+
+        yield return new WaitForSeconds(.4f);
+
+        this.StartSafeCoroutine(ExplodeTargets(middleRing, .2f));
+
+        yield return new WaitForSeconds(.6f);
+
+        this.StartSafeCoroutine(ExplodeTargets(frontRing, .2f));
+    }
+
+    IEnumerator ExplodeTargets(Vector3[] targets, float delay){
+        for (int i = 0; i < targets.Length; i++){
+            Explode(targets[i]);
+            yield return new WaitForSeconds(delay);
         }
     }
 
@@ -64,7 +93,6 @@ public class Blomp : MonoBehaviour {
                                                                             )
                                                                 )
                                                ) as GameObject;
-        //explosion.transform.localScale *= 2;
     }
 
     IEnumerator SpinBlompFans(){
