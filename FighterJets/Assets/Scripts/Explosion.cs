@@ -13,13 +13,14 @@ public class Explosion : MonoBehaviour {
         this.StartSafeCoroutine(ScaleExplosion(explosion2));
     }
 
-    IEnumerator ScaleExplosion(GameObject explosion){ 
+    IEnumerator ScaleExplosion(GameObject explosion){
         float expandTime = .3f;
-        
+
         for (float i = 0; i < 1; i += Time.deltaTime / expandTime){
             explosion.transform.localScale = new Vector3(i, i, i);
             yield return null;
         }
+        explosion.transform.localScale = Vector3.one;
 
         yield return new WaitForSeconds(.2f);
 
@@ -27,7 +28,7 @@ public class Explosion : MonoBehaviour {
             explosion.transform.localScale = new Vector3(i, i, i);
             yield return null;
         }
-
+        explosion.transform.localScale = Vector3.zero;
         Destroy(this.gameObject);
     }
 
@@ -44,7 +45,7 @@ public class Explosion : MonoBehaviour {
             else {
                 explosion.transform.Rotate(0, 0, 1);
             }
-            
+
             yield return null;
         }
     }
