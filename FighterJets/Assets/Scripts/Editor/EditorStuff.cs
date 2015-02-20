@@ -36,4 +36,9 @@ public class EditorStuff : MonoBehaviour {
 		Debug.Log(Application.dataPath);
 	}
 
+	[MenuItem("Custom/Print Stuff")]
+	public static void PrintStuff(){
+		Debug.Log(GameObject.Find("Blomp").GetComponentsInChildren<Transform>().Where(x => x.parent.name.Contains("Turret")).ToList().Count());
+	}
+
 }
