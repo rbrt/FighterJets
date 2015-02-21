@@ -19,8 +19,8 @@ public class GeneratePlane : MonoBehaviour {
 		meshFilter = GetComponent<MeshFilter>();
 		meshFilter.mesh = mesh;
 
-		float length = 10000f;
-		float width = 10000f;
+		float length = 100f;
+		float width = 100f;
 		int resX = 50; // 2 minimum
 		int resZ = 50;
 
@@ -103,7 +103,7 @@ public class GeneratePlane : MonoBehaviour {
 	Vector3 CreateNewVector(float x, float z){
 		float scalingFactor = 400f;
 		var vec =  new Vector3(x,
-						   	   Mathf.PerlinNoise(x,z) * scalingFactor - scalingFactor,
+						   	   0,//Mathf.PerlinNoise(x,z) * scalingFactor - scalingFactor,
 						   	   z);
 		return vec;
 	}
