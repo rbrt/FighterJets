@@ -19,8 +19,8 @@ public class GeneratePlane : MonoBehaviour {
 		meshFilter = GetComponent<MeshFilter>();
 		meshFilter.mesh = mesh;
 
-		float length = 100f;
-		float width = 100f;
+		float length = 1000f;
+		float width = 1000f;
 		int resX = 100; // 2 minimum
 		int resZ = 100;
 

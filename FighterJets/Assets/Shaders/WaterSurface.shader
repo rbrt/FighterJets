@@ -1,6 +1,6 @@
 ﻿Shader "Custom/WaterSurface" {
 	Properties {
-		_MainTex ("Base (RGB)", 2D) = "white" {}
+		_Color ("Color", Color) = (0,0,1,0)
 		_Lambda ("Lambda", Float) = 0
 		_WaveVector ("Wave Vector", Float) = 0
 		_Frequency ("Frequency", Float) = 0
@@ -12,33 +12,18 @@
 
 		CGPROGRAM
 		#pragma surface surf Lambert vertex:vert
-
-		sampler2D _MainTex;
+		#pragma target 3.0
 
 		struct Input {
-			float2 uv_MainTex;
-		};
+			float3 pos : SV_POSITION;
+            float3 normal : TEXCOORD;
+        };
 
 		float _Amplitude;
 		float _Frequency;
 		float _WaveVector;
 		float _Lambda;
-
-		fixed3 gerstner(fixed2 x0){
-			float lambda = _Lambda;
-			fixed2 waveVector = fixed2(_WaveVector, _WaveVector);
-			float g = 9.8;
-			float frequency = sqrt(g * _Frequency);
-			float amplitude = _Amplitude;
-			float k = 2 * 3.14159 / lambda;
-			float t = _Time.y;
-			fixed3 wave;
-
-			wave.xz = x0 - (waveVector / k) * amplitude * sin(dot(waveVector, x0) - frequency * t);
-			wave.y = amplitude * cos(dot(waveVector, x0) - frequency * t);
-
-			return wave;
-		}
+		fixed4 _Color;
 
 		fixed2 gerstnerSumXZ(fixed2 x0, fixed2 waveVector, float freq, float amplitude, float phase){
 			float lambda = _Lambda;
@@ -47,8 +32,9 @@
 			float k = 2 * 3.14159 / lambda;
 			float t = _Time.y;
 			fixed2 wave;
+			float amp = amplitude * _Amplitude;
 
-			wave.xy = (waveVector / k) * amplitude * sin(dot(waveVector, x0) - frequency * t + phase);
+			wave.xy = (waveVector / k) * amp * sin(dot(waveVector, x0) - frequency * t + phase);
 
 			return wave;
 		}
@@ -61,7 +47,9 @@
 			float t = _Time.y;
 			fixed3 wave;
 
-			return amplitude * cos(dot(waveVector, x0) - frequency * t + phase);
+			float amp = amplitude * _Amplitude;
+
+			return amp * cos(dot(waveVector, x0) - frequency * t + phase);
 		}
 
 		fixed3 gerstnerSumGenerator(fixed2 x0){
@@ -81,15 +69,17 @@
 			return wave;
 		}
 
-		void vert (inout appdata_full v){
-			v.vertex.xyz = gerstnerSumGenerator(v.vertex.xz);
-			v.normal = v.vertex;
+		void vert (inout appdata_full v, out Input o){
+			float4 p = v.vertex;
+			p.xyz = gerstnerSumGenerator(v.vertex.xz);
+			v.vertex = p;
+			o.pos = mul(UNITY_MATRIX_MVP, p);
+			o.normal = v.vertex.xyz;
+			v.normal = v.vertex.xyz;
 		}
 
 		void surf (Input IN, inout SurfaceOutput o) {
-			half4 c = tex2D (_MainTex, IN.uv_MainTex);
-			o.Albedo = c.rgb;
-			o.Alpha = c.a;
+			o.Albedo = _Color;
 		}
 		ENDCG
 	}
