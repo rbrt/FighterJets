@@ -21,8 +21,8 @@ public class GeneratePlane : MonoBehaviour {
 
 		float length = 100f;
 		float width = 100f;
-		int resX = 50; // 2 minimum
-		int resZ = 50;
+		int resX = 100; // 2 minimum
+		int resZ = 100;
 
 		Vector3[] vertices = new Vector3[ resX * resZ ];
 		for(int z = 0; z < resZ; z++)
