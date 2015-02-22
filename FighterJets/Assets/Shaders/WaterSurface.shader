@@ -2,9 +2,10 @@
 	Properties {
 		_Color ("Color", Color) = (0,0,1,0)
 		_Lambda ("Lambda", Float) = 0
-		_WaveVector ("Wave Vector", Float) = 0
 		_Frequency ("Frequency", Float) = 0
 		_Amplitude ("Amplitude", Float) = 0
+		_PlayerPosition("Player Position", Vector) = (0,0,0,0)
+		_PlayerForward("Player Forward", Vector) = (0,0,0,0)
 	}
 	SubShader {
 		Tags { "RenderType"="Opaque" }
@@ -17,13 +18,17 @@
 		struct Input {
 			float3 pos : SV_POSITION;
             float3 normal : TEXCOORD;
+			float4 color : COLOR;
+			float3 worldPos;
         };
 
 		float _Amplitude;
 		float _Frequency;
-		float _WaveVector;
 		float _Lambda;
 		fixed4 _Color;
+
+		fixed4 _PlayerPosition;
+		fixed4 _PlayerForward;
 
 		fixed2 gerstnerSumXZ(fixed2 x0, fixed2 waveVector, float freq, float amplitude, float phase){
 			float lambda = _Lambda;
@@ -73,13 +78,26 @@
 			float4 p = v.vertex;
 			p.xyz = gerstnerSumGenerator(v.vertex.xz);
 			v.vertex = p;
-			//o.pos = mul(UNITY_MATRIX_MVP, p);
+			//o.color.xyz = mul(, v.vertex);
 			//o.normal = v.vertex.xyz;
 			//v.normal = v.vertex.xyz;
 		}
 
 		void surf (Input IN, inout SurfaceOutput o) {
-			o.Albedo = _Color;
+			float deltaY = 100;
+			float4 forwardPoint = _PlayerPosition + _PlayerForward * 30;
+			float4 rearPoint = _PlayerPosition - _PlayerForward * deltaY;
+			float4 proxyVector = forwardPoint + float4(0,1,0,0);
+
+			float3 rightPoint = rearPoint + cross(proxyVector.xyz, forwardPoint.xyz);
+			float3 leftPoint = rearPoint + cross(forwardPoint.xyz, proxyVector.xyz);
+
+			if (distance(IN.worldPos, leftPoint) < 50){
+				o.Albedo = fixed4(1,1,0,.5);
+			}
+			else{
+				o.Albedo = _Color;
+			}
 		}
 		ENDCG
 	}
