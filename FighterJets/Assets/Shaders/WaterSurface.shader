@@ -56,7 +56,7 @@
 			fixed3 wave;
 
 			wave.xz = gerstnerSumXZ(x0, fixed2(1,1), .2, .2, .2);
-			wave.y += gerstnerSumY(x0, fixed2(1,1), .2, .2, .2);
+			wave.y = gerstnerSumY(x0, fixed2(1,1), .2, .2, .2);
 			wave.xz += gerstnerSumXZ(x0, fixed2(1,-1), 1, .5, .1);
 			wave.y += gerstnerSumY(x0, fixed2(1,-1), 1, .5, .1);
 			//wave.xz = gerstnerSumXZ(x0, fixed2(-1,1), .3, 1, .5);
@@ -73,9 +73,9 @@
 			float4 p = v.vertex;
 			p.xyz = gerstnerSumGenerator(v.vertex.xz);
 			v.vertex = p;
-			o.pos = mul(UNITY_MATRIX_MVP, p);
-			o.normal = v.vertex.xyz;
-			v.normal = v.vertex.xyz;
+			//o.pos = mul(UNITY_MATRIX_MVP, p);
+			//o.normal = v.vertex.xyz;
+			//v.normal = v.vertex.xyz;
 		}
 
 		void surf (Input IN, inout SurfaceOutput o) {

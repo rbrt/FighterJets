@@ -10,6 +10,8 @@ public class GeneratePlane : MonoBehaviour {
 
 	int[] triangles;
 
+	[SerializeField] protected float scalingFactor;
+
 	void Awake(){
 		GenerateNewPlane();
 	}
@@ -101,9 +103,8 @@ public class GeneratePlane : MonoBehaviour {
 	}
 
 	Vector3 CreateNewVector(float x, float z){
-		float scalingFactor = 400f;
 		var vec =  new Vector3(x,
-						   	   0,//Mathf.PerlinNoise(x,z) * scalingFactor - scalingFactor,
+						   	   Mathf.PerlinNoise(x,z) * scalingFactor - scalingFactor,
 						   	   z);
 		return vec;
 	}
