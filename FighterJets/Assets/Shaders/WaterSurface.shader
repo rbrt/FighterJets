@@ -74,6 +74,20 @@
 			return wave;
 		}
 
+		float sign (float2 p1, float2 p2, float2 p3){
+		    return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
+		}
+
+		bool PointInTriangle (float2 pt, float2 v1, float2 v2, float2 v3){
+		    bool b1, b2, b3;
+
+		    b1 = sign(pt, v1, v2) < 0.0f;
+		    b2 = sign(pt, v2, v3) < 0.0f;
+		    b3 = sign(pt, v3, v1) < 0.0f;
+
+		    return ((b1 == b2) && (b2 == b3));
+		}
+
 		void vert (inout appdata_full v, out Input o){
 			float4 p = v.vertex;
 			p.xyz = gerstnerSumGenerator(v.vertex.xz);
@@ -85,15 +99,18 @@
 
 		void surf (Input IN, inout SurfaceOutput o) {
 			float deltaY = 100;
+			float scaleWidth = 50;
 			float4 forwardPoint = _PlayerPosition + _PlayerForward * 30;
 			float4 rearPoint = _PlayerPosition - _PlayerForward * deltaY;
-			float4 proxyVector = forwardPoint + float4(0,1,0,0);
+			float4 proxyVector = forwardPoint + float4(0,.1,0,0);
 
-			float3 rightPoint = rearPoint + cross(proxyVector.xyz, forwardPoint.xyz);
-			float3 leftPoint = rearPoint + cross(forwardPoint.xyz, proxyVector.xyz);
+			// Will want to multiply these by some value
+			float3 rightPoint = rearPoint + cross(proxyVector.xyz, forwardPoint.xyz) * scaleWidth;
+			float3 leftPoint = rearPoint + cross(forwardPoint.xyz, proxyVector.xyz) * scaleWidth;
 
-			if (distance(IN.worldPos, leftPoint) < 50){
-				o.Albedo = fixed4(1,1,0,.5);
+			//if (distance(IN.worldPos, leftPoint) < 50){
+			if (PointInTriangle(IN.worldPos.xz, rightPoint.xz, leftPoint.xz, forwardPoint.xz)){
+				o.Albedo = fixed4(1,0,0,.5);
 			}
 			else{
 				o.Albedo = _Color;
