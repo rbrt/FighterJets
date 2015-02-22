@@ -11,6 +11,10 @@ public class GeneratePlane : MonoBehaviour {
 	int[] triangles;
 
 	[SerializeField] protected float scalingFactor;
+	[SerializeField] protected float length;
+	[SerializeField] protected float width;
+	[SerializeField] protected int resX;
+	[SerializeField] protected int resZ;
 
 	void Awake(){
 		GenerateNewPlane();
@@ -20,11 +24,6 @@ public class GeneratePlane : MonoBehaviour {
 		Mesh mesh = new Mesh();
 		meshFilter = GetComponent<MeshFilter>();
 		meshFilter.mesh = mesh;
-
-		float length = 1000f;
-		float width = 1000f;
-		int resX = 100; // 2 minimum
-		int resZ = 100;
 
 		Vector3[] vertices = new Vector3[ resX * resZ ];
 		for(int z = 0; z < resZ; z++)

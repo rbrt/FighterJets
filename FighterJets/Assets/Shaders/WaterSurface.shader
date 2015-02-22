@@ -6,6 +6,7 @@
 		_Amplitude ("Amplitude", Float) = 0
 		_PlayerPosition("Player Position", Vector) = (0,0,0,0)
 		_PlayerForward("Player Forward", Vector) = (0,0,0,0)
+		_PlayerRight("Player Right", Vector) = (0,0,0,0)
 	}
 	SubShader {
 		Tags { "RenderType"="Opaque" }
@@ -29,13 +30,15 @@
 
 		fixed4 _PlayerPosition;
 		fixed4 _PlayerForward;
+		fixed4 _PlayerRight;
 
-		fixed2 gerstnerSumXZ(fixed2 x0, fixed2 waveVector, float freq, float amplitude, float phase){
+		fixed2 gerstnerSumXZ(fixed2 x0, fixed2 waveVector, float freq, float amplitude, float phase, float doIt){
 			float lambda = _Lambda;
 			float g = 9.8;
 			float frequency = sqrt(g * freq);
 			float k = 2 * 3.14159 / lambda;
-			float t = _Time.y;
+			float waterRipple = 3;
+			float t = doIt > 0 ? _Time.z * waterRipple : _Time.y;
 			fixed2 wave;
 			float amp = amplitude * _Amplitude;
 
@@ -44,12 +47,13 @@
 			return wave;
 		}
 
-		float gerstnerSumY(fixed2 x0, fixed2 waveVector, float freq, float amplitude, float phase){
+		float gerstnerSumY(fixed2 x0, fixed2 waveVector, float freq, float amplitude, float phase, float doIt){
 			float lambda = _Lambda;
 			float g = 9.8;
 			float frequency = sqrt(g * freq);
 			float k = 2 * 3.14159 / lambda;
-			float t = _Time.y;
+			float waterRipple = 3;
+			float t = doIt > 0 ? _Time.z * waterRipple : _Time.y;
 			fixed3 wave;
 
 			float amp = amplitude * _Amplitude;
@@ -57,13 +61,13 @@
 			return amp * cos(dot(waveVector, x0) - frequency * t + phase);
 		}
 
-		fixed3 gerstnerSumGenerator(fixed2 x0){
+		fixed3 gerstnerSumGenerator(fixed2 x0, float doIt){
 			fixed3 wave;
 
-			wave.xz = gerstnerSumXZ(x0, fixed2(1,1), .2, .2, .2);
-			wave.y = gerstnerSumY(x0, fixed2(1,1), .2, .2, .2);
-			wave.xz += gerstnerSumXZ(x0, fixed2(1,-1), 1, .5, .1);
-			wave.y += gerstnerSumY(x0, fixed2(1,-1), 1, .5, .1);
+			wave.xz = gerstnerSumXZ(x0, fixed2(1,1), .2, .2, .2, doIt);
+			wave.y = gerstnerSumY(x0, fixed2(1,1), .2, .2, .2, doIt);
+			wave.xz += gerstnerSumXZ(x0, fixed2(1,-1), 1, .5, .1, doIt);
+			wave.y += gerstnerSumY(x0, fixed2(1,-1), 1, .5, .1, doIt);
 			//wave.xz = gerstnerSumXZ(x0, fixed2(-1,1), .3, 1, .5);
 			//wave.y += gerstnerSumY(x0, fixed2(-1,1), .3, 1, .5);
 			//wave.xz += gerstnerSumXZ(x0, fixed2(-1,-1), 1, .5, .2);
@@ -90,31 +94,36 @@
 
 		void vert (inout appdata_full v, out Input o){
 			float4 p = v.vertex;
-			p.xyz = gerstnerSumGenerator(v.vertex.xz);
-			v.vertex = p;
+
+
+			float deltaY = _PlayerPosition.y - v.vertex.y;
+			float scaleWidth = 50;
+			float scaleLength = 90;
+			float4 forwardPoint = _PlayerPosition + _PlayerForward * 30;
+			float4 rearPoint = _PlayerPosition - _PlayerForward * scaleLength;
+
+			// Will want to multiply these by some value
+			float3 rightPoint = rearPoint + _PlayerRight * scaleWidth;
+			float3 leftPoint = rearPoint - _PlayerRight * scaleWidth;
+
+			//if (distance(IN.worldPos, leftPoint) < 50){
+			if (PointInTriangle(v.vertex.xz, rightPoint.xz, leftPoint.xz, forwardPoint.xz)){
+				float maxDist = distance(forwardPoint.xz, rearPoint.xz);
+				float offset = pow(distance(forwardPoint.xz, v.vertex.xz) / maxDist, 2) * 20;
+				v.vertex.xyz = gerstnerSumGenerator(v.vertex.xz, 1);
+				v.vertex.y -= offset;
+			}
+			else{
+				v.vertex.xyz = gerstnerSumGenerator(v.vertex.xz, 0);
+			}
+
 			//o.color.xyz = mul(, v.vertex);
 			//o.normal = v.vertex.xyz;
 			//v.normal = v.vertex.xyz;
 		}
 
 		void surf (Input IN, inout SurfaceOutput o) {
-			float deltaY = 100;
-			float scaleWidth = 50;
-			float4 forwardPoint = _PlayerPosition + _PlayerForward * 30;
-			float4 rearPoint = _PlayerPosition - _PlayerForward * deltaY;
-			float4 proxyVector = forwardPoint + float4(0,.1,0,0);
-
-			// Will want to multiply these by some value
-			float3 rightPoint = rearPoint + cross(proxyVector.xyz, forwardPoint.xyz) * scaleWidth;
-			float3 leftPoint = rearPoint + cross(forwardPoint.xyz, proxyVector.xyz) * scaleWidth;
-
-			//if (distance(IN.worldPos, leftPoint) < 50){
-			if (PointInTriangle(IN.worldPos.xz, rightPoint.xz, leftPoint.xz, forwardPoint.xz)){
-				o.Albedo = fixed4(1,0,0,.5);
-			}
-			else{
-				o.Albedo = _Color;
-			}
+			o.Albedo = _Color;
 		}
 		ENDCG
 	}
