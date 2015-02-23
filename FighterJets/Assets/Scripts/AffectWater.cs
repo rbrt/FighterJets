@@ -7,11 +7,18 @@ public class AffectWater : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		water = (GameObject.Find("WaterMeshGenerator") as GameObject).GetComponent<Renderer>().sharedMaterial;
+		if ((GameObject.Find("WaterMeshGenerator") as GameObject)){
+			water = (GameObject.Find("WaterMeshGenerator") as GameObject).GetComponent<Renderer>().sharedMaterial;
+		}
 	}
 
 	// Update is called once per frame
 	void Update () {
+
+		if (!water){
+			return;
+		}
+
 		var playerForward = transform.forward;
 		var playerPosition = transform.position;
 
