@@ -99,7 +99,7 @@
 			float deltaY = _PlayerPosition.y - v.vertex.y;
 			float scaleWidth = 50;
 			float scaleLength = 90;
-			float4 forwardPoint = _PlayerPosition + _PlayerForward * 30;
+			float4 forwardPoint = _PlayerPosition + _PlayerForward * 60;
 			float4 rearPoint = _PlayerPosition - _PlayerForward * scaleLength;
 
 			// Will want to multiply these by some value

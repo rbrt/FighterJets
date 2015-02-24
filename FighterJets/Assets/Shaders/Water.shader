@@ -58,7 +58,7 @@ SubShader {
 			float gerstnerSumY(fixed2 x0, fixed2 waveVector, float freq, float amplitude, float phase, float doIt){
 				float lambda = _Lambda;
 				float g = 9.8;
-				float frequency = sqrt(g * freq);
+				float frequency = sqrt(g * freq * _Frequency);
 				float k = 2 * 3.14159 / lambda;
 				float waterRipple = 3;
 				float t = doIt > 0 ? _Time.z * waterRipple : _Time.y;
