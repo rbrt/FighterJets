@@ -4,18 +4,26 @@ using System.Collections;
 public class AffectWater : MonoBehaviour {
 
 	Material water;
+	Transform waterTransform;
+	[SerializeField] protected float effectMinHeight;
 
-	// Use this for initialization
-	void Start () {
+	Vector3 haltEffectSignal;
+
+	void Awake(){
+		haltEffectSignal = new Vector3(-9999, 0, 0);
 		if ((GameObject.Find("WaterMeshGenerator") as GameObject)){
-			water = (GameObject.Find("WaterMeshGenerator") as GameObject).GetComponent<Renderer>().sharedMaterial;
+			waterTransform = (GameObject.Find("WaterMeshGenerator") as GameObject).GetComponent<Transform>();
+			water = waterTransform.GetComponent<Renderer>().sharedMaterial;
 		}
 	}
 
-	// Update is called once per frame
 	void Update () {
-
 		if (!water){
+			return;
+		}
+
+		if (transform.position.y - waterTransform.position.y > effectMinHeight){
+			water.SetVector("_PlayerPosition", haltEffectSignal);
 			return;
 		}
 
@@ -25,16 +33,6 @@ public class AffectWater : MonoBehaviour {
 		water.SetVector("_PlayerPosition", transform.position);
 		water.SetVector("_PlayerForward", transform.forward);
 		water.SetVector("_PlayerRight", transform.right);
-
-		float deltaY = 2;			// Should be the diff between playerY and vertexY
-		float scaleWidth = 5;		// Should dependent on deltaY somehow
-		Vector3 forwardPoint = (playerPosition + playerForward);
-		Vector3 rearPoint = (playerPosition - playerForward);
-
-		Vector3 rightPoint = rearPoint + transform.right;
-		Vector3 leftPoint = rearPoint - transform.right;
-
-		leftPoint.y = playerPosition.y;
-		rightPoint.y = playerPosition.y;
+		water.SetFloat("_DeltaY", effectMinHeight - (transform.position.y - waterTransform.position.y));
 	}
 }

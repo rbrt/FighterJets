@@ -25,13 +25,14 @@ public class PlayerShield : MonoBehaviour {
                                  46/255f);
         clearColor = displayColor;
         clearColor.a = 0;
+
+        CleanUp();
     }
 
     public void ShieldHit(Transform target){
         KillShield();
         KillShieldFade();
 
-        // Rotate accordingly
         transform.LookAt(target);
 
         shieldFadeCoroutine = this.StartSafeCoroutine(FadeShieldIn(true));

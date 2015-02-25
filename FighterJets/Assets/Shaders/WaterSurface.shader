@@ -7,6 +7,7 @@
 		_PlayerPosition("Player Position", Vector) = (0,0,0,0)
 		_PlayerForward("Player Forward", Vector) = (0,0,0,0)
 		_PlayerRight("Player Right", Vector) = (0,0,0,0)
+		_DeltaY("DeltaY", Float) = 0
 	}
 	SubShader {
 		Tags { "RenderType"="Opaque" }
@@ -21,11 +22,13 @@
             float3 normal : TEXCOORD;
 			float4 color : COLOR;
 			float3 worldPos;
+			float test;
         };
 
 		float _Amplitude;
 		float _Frequency;
 		float _Lambda;
+		float _DeltaY;
 		fixed4 _Color;
 
 		fixed4 _PlayerPosition;
@@ -95,34 +98,31 @@
 		void vert (inout appdata_full v, out Input o){
 			float4 p = v.vertex;
 
+			float deltaY = _DeltaY;
 
-			float deltaY = _PlayerPosition.y - v.vertex.y;
-			float scaleWidth = 50;
-			float scaleLength = 90;
-			float4 forwardPoint = _PlayerPosition + _PlayerForward * 60;
+			float scaleWidth = deltaY * 2;
+			float scaleLength = deltaY * 2;
+			float4 forwardPoint = _PlayerPosition + _PlayerForward * 80;
 			float4 rearPoint = _PlayerPosition - _PlayerForward * scaleLength;
 
-			// Will want to multiply these by some value
 			float3 rightPoint = rearPoint + _PlayerRight * scaleWidth;
 			float3 leftPoint = rearPoint - _PlayerRight * scaleWidth;
 
-			//if (distance(IN.worldPos, leftPoint) < 50){
-			if (PointInTriangle(v.vertex.xz, rightPoint.xz, leftPoint.xz, forwardPoint.xz)){
+			if (_PlayerPosition.x != -9999 && PointInTriangle(v.vertex.xz, rightPoint.xz, leftPoint.xz, forwardPoint.xz)){
 				float maxDist = distance(forwardPoint.xz, rearPoint.xz);
-				float offset = pow(distance(forwardPoint.xz, v.vertex.xz) / maxDist, 2) * 20;
+				float offset = pow(distance(forwardPoint.xz, v.vertex.xz) / maxDist, 2);
 				v.vertex.xyz = gerstnerSumGenerator(v.vertex.xz, 1);
 				v.vertex.y -= offset;
 			}
 			else{
 				v.vertex.xyz = gerstnerSumGenerator(v.vertex.xz, 0);
 			}
-
-			//o.color.xyz = mul(, v.vertex);
-			//o.normal = v.vertex.xyz;
-			//v.normal = v.vertex.xyz;
 		}
 
 		void surf (Input IN, inout SurfaceOutput o) {
+			if (IN.test > 0){
+				o.Albedo = fixed4(1,0,0,1);
+			}
 			o.Albedo = _Color;
 		}
 		ENDCG
