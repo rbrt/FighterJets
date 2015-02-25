@@ -71,10 +71,6 @@
 			wave.y = gerstnerSumY(x0, fixed2(1,1), .2, .2, .2, doIt);
 			wave.xz += gerstnerSumXZ(x0, fixed2(1,-1), 1, .5, .1, doIt);
 			wave.y += gerstnerSumY(x0, fixed2(1,-1), 1, .5, .1, doIt);
-			//wave.xz = gerstnerSumXZ(x0, fixed2(-1,1), .3, 1, .5);
-			//wave.y += gerstnerSumY(x0, fixed2(-1,1), .3, 1, .5);
-			//wave.xz += gerstnerSumXZ(x0, fixed2(-1,-1), 1, .5, .2);
-			//wave.y += gerstnerSumY(x0, fixed2(-1,-1), 1, .5, .2);
 
 			wave.xz = x0 - wave.xz;
 
