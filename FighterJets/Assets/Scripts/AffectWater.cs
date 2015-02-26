@@ -7,6 +7,8 @@ public class AffectWater : MonoBehaviour {
 	Transform waterTransform;
 	[SerializeField] protected float effectMinHeight;
 
+	[SerializeField] protected WaterSplashController waterSplashController;
+
 	Vector3 haltEffectSignal;
 
 	void Awake(){
@@ -22,10 +24,14 @@ public class AffectWater : MonoBehaviour {
 			return;
 		}
 
-		if (transform.position.y - waterTransform.position.y > effectMinHeight){
+		float deltaY = transform.position.y - waterTransform.position.y;
+
+		if (deltaY > effectMinHeight){
 			water.SetVector("_PlayerPosition", haltEffectSignal);
 			return;
 		}
+
+		waterSplashController.DeltaY = deltaY / effectMinHeight;
 
 		var playerForward = transform.forward;
 		var playerPosition = transform.position;
@@ -33,6 +39,6 @@ public class AffectWater : MonoBehaviour {
 		water.SetVector("_PlayerPosition", transform.position);
 		water.SetVector("_PlayerForward", transform.forward);
 		water.SetVector("_PlayerRight", transform.right);
-		water.SetFloat("_DeltaY", effectMinHeight - (transform.position.y - waterTransform.position.y));
+		water.SetFloat("_DeltaY", effectMinHeight - deltaY);
 	}
 }
