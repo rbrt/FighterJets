@@ -92,6 +92,7 @@
 		}
 
 		void vert (inout appdata_full v, out Input o){
+			UNITY_INITIALIZE_OUTPUT(Input,o);
 			float4 p = v.vertex;
 
 			float deltaY = _DeltaY;
