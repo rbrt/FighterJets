@@ -4,3 +4,4 @@ Library
 *.sln
 *.csproj.user
 obj
+*-csharp.v11.suo
